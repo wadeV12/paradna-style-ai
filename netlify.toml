@@ -1,5 +1,6 @@
 # Netlify: static Gatsby build. Connect the GitHub repo and Netlify picks this up.
-# Netlify adds Gatsby's adapter automatically (build cache between deploys).
+# `npm run build` runs `gatsby clean` first: Gatsby's incremental HTML builds kept
+# stale inlined CSS from the restored cache after CSS-only changes.
 
 [build]
   command = "npm run build"
