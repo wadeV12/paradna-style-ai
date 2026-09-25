@@ -16,14 +16,3 @@ export const onPreRouteUpdate: GatsbyBrowser["onPreRouteUpdate"] = ({ location, 
   if (prevLocation && prevLocation.pathname !== location.pathname) document.documentElement.classList.add("nointro")
 }
 
-// Gatsby renders the Head API into a hidden <div>, and silences React's
-// "<html> inside <div>" dev warning, but only in React 18's wording. Same
-// filter for React 19's wording. Development only.
-if (process.env.NODE_ENV === "development") {
-  const original = console.error.bind(console)
-  console.error = (...args: unknown[]) => {
-    const [msg, el] = args
-    if (typeof msg === "string" && msg.startsWith("In HTML, %s cannot be a child of") && (el === "<html>" || el === "<body>")) return
-    original(...args)
-  }
-}

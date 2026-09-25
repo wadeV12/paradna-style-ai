@@ -12,6 +12,9 @@ try{s=sessionStorage.getItem('tp-intro')}catch(e){}
 var still=/[?&]still(&|=|$)/.test(q);
 if(s||still)d.classList.add('nointro');if(still)d.classList.add('still');})()`
 
-export const onRenderBody: GatsbySSR["onRenderBody"] = ({ setHeadComponents }) => {
+// `lang` is set here, not with <html lang> in the Head API: React 19 treats
+// <html> as a singleton and would wipe the classes the pre-paint script adds.
+export const onRenderBody: GatsbySSR["onRenderBody"] = ({ setHeadComponents, setHtmlAttributes, pathname }) => {
+  setHtmlAttributes({ lang: pathname.startsWith("/ua") ? "uk" : "en" })
   setHeadComponents([<script key="tp-prepaint" dangerouslySetInnerHTML={{ __html: prePaint }} />])
 }

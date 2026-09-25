@@ -45,7 +45,6 @@ export const Head: HeadFC<Data, Ctx> = ({ pageContext }) => {
   const t = dicts[pageContext.lang]
   return (
     <>
-      <html lang={pageContext.lang} />
       <title>{t.metaTitle}</title>
       <meta name="description" content={t.metaDescription} />
       <meta name="theme-color" content="#0E0C0A" />

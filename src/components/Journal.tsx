@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useI18n } from "../content/i18n"
 import { site } from "../config/site"
-import { BigNum, Label, MaskHeading, tones } from "./ui"
+import { BigNum, Label, MaskHeading, gutter, tones } from "./ui"
 
 const Journal = () => {
   const { t } = useI18n()
@@ -14,22 +14,22 @@ const Journal = () => {
 
   return (
     <section id="journal" className="sec bg-bg">
-      <div className="relative mx-auto max-w-[1440px] px-[112px] pt-[170px] pb-[200px]">
+      <div className={`relative mx-auto max-w-[1440px] py-24 md:py-36 xl:pt-[170px] xl:pb-[200px] ${gutter}`}>
         <BigNum n="05" className="top-5" />
-        <div className="relative mb-[70px] flex items-end justify-between">
+        <div className="relative mb-12 flex flex-col items-start gap-8 md:mb-[70px] md:flex-row md:items-end md:justify-between">
           <div>
             <Label className="mb-[30px]">{t.l5}</Label>
-            <MaskHeading a={t.h5a} b={t.h5b} className="text-[min(90px,6.25vw)] leading-[1.02]" />
+            <MaskHeading a={t.h5a} b={t.h5b} className="text-[clamp(40px,5.2vw+16px,90px)] leading-[1.02]" />
           </div>
           <a className="ul rv text-[12px] font-medium tracking-[0.24em] uppercase" href={site.instagram.url} target="_blank" rel="noopener">
             {t.follow}
           </a>
         </div>
-        <div className="drift grid grid-cols-6 items-start gap-5">
+        <div className="drift grid grid-cols-2 items-start gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-6">
           {posts.map((p) => (
             <a
               key={p.n}
-              className={`ig tileIn relative block aspect-[4/5] overflow-hidden ${p.offset ? "mt-12" : ""}`}
+              className={`ig tileIn relative block aspect-[4/5] overflow-hidden ${p.offset ? "mt-8 md:mt-12" : ""}`}
               href={site.instagram.url}
               target="_blank"
               rel="noopener"

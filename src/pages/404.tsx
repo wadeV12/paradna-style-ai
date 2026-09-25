@@ -31,7 +31,6 @@ export default NotFound
 
 export const Head: HeadFC = () => (
   <>
-    <html lang="en" />
     <title>404 — Tetyana Paradna</title>
     <meta name="robots" content="noindex" />
   </>

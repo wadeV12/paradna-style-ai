@@ -24,9 +24,9 @@ export const MaskHeading = ({ a, b, indent, className = "" }: { a: string; b: st
   </h2>
 )
 
-/** Giant outlined section numeral drifting behind the content. */
+/** Giant outlined section numeral drifting behind the content (hidden on mobile). */
 export const BigNum = ({ n, className = "" }: { n: string; className?: string }) => (
-  <div aria-hidden="true" className={`bignum pointer-events-none absolute right-10 font-serif text-[360px] leading-none italic ${className}`}>
+  <div aria-hidden="true" className={`bignum pointer-events-none absolute right-10 hidden font-serif text-[clamp(220px,25vw,360px)] leading-none italic md:block ${className}`}>
     {n}
   </div>
 )
@@ -55,7 +55,7 @@ export const RingText = ({
 }) => {
   const c = size / 2
   return (
-    <svg className={`spin absolute inset-0 ${className}`} width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden="true">
+    <svg className={`spin absolute inset-0 size-full ${className}`} width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden="true">
       <defs>
         <path id={id} d={`M${c},${c} m-${r},0 a${r},${r} 0 1,1 ${r * 2},0 a${r},${r} 0 1,1 -${r * 2},0`} />
       </defs>
@@ -76,3 +76,6 @@ export const PhCaption = ({ children, className = "" }: { children: React.ReactN
 
 /** Placeholder tones for image slots, in the design's order. */
 export const tones = ["var(--ph1)", "var(--ph8)", "var(--ph9)", "var(--ph2)", "var(--ph3)", "var(--ph10)", "var(--ph11)"]
+
+/** Horizontal page gutter: 24 → 48 → 112px (design). */
+export const gutter = "px-6 md:px-12 xl:px-[112px]"

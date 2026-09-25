@@ -104,7 +104,9 @@ html.nointro {
   --ease-wipe: cubic-bezier(0.77, 0, 0.18, 1);
 
   /* nav collapses into a menu button below this */
-  --breakpoint-nav: 68.75rem;
+  --breakpoint-nav: 75rem;
+  /* the design's own width: full nav (name, 38px gaps, 72px padding) from here */
+  --breakpoint-design: 90rem;
 }
 
 /* ---------- base ---------- */
@@ -293,7 +295,7 @@ html.vt-lang::view-transition-new(root){animation:vtIn .8s cubic-bezier(.19,1,.2
      cards stay reachable (as a swipe row) when animations are switched off */
   @media (min-width: 1024px) and (prefers-reduced-motion: no-preference){
     html:not(.still) .gal{height:2600px;view-timeline-name:--gal;view-timeline-axis:block}
-    html:not(.still) .galStick{position:sticky;top:88px;height:820px;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+    html:not(.still) .galStick{position:sticky;top:88px;height:820px;max-height:calc(100vh - 88px);padding-block:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
     html:not(.still) .galTrack{animation:galX linear both;animation-timeline:--gal;animation-range:contain 0% contain 100%}
     html:not(.still) .galBar{display:block}
     html:not(.still) .galProg{animation:grow linear both;animation-timeline:--gal;animation-range:contain 0% contain 100%}
@@ -303,8 +305,12 @@ html.vt-lang::view-transition-new(root){animation:vtIn .8s cubic-bezier(.19,1,.2
   .pageProg{animation:grow linear both;animation-timeline:scroll()}
 
   /* section-to-section: cards that round in, then recede */
-  @keyframes secIn{from{border-radius:80px 80px 0 0;transform:scale(.95)}}
-  @keyframes secOut{to{transform:scale(.9);opacity:.15;border-radius:0 0 80px 80px}}
+  @keyframes secIn{from{border-radius:var(--r) var(--r) 0 0;transform:scale(.95)}}
+  @keyframes secOut{to{transform:scale(.9);opacity:.15;border-radius:0 0 var(--r) var(--r)}}
+  /* card corner radius: 32px mobile, 56px tablet, 80px desktop (design) */
+  .sec{--r:32px}
+  @media (min-width: 768px){.sec{--r:56px}}
+  @media (min-width: 1280px){.sec{--r:80px}}
   .sec{transform-origin:50% 50%;animation:secIn linear both,secOut linear both;animation-timeline:view(),view();animation-range:entry 0% entry 70%,exit 35% exit 100%}
 
   /* hero leaves in layers (desktop only) */
@@ -338,10 +344,19 @@ html.vt-lang::view-transition-new(root){animation:vtIn .8s cubic-bezier(.19,1,.2
   .spread{animation:spread linear both;animation-timeline:view();animation-range:entry 0% cover 55%}
 }
 
+/* service preview only follows a fine pointer; hide it where nothing moves it */
+@media not ((hover: hover) and (pointer: fine)){.pv{display:none}}
+
 /* ---------- motion switches ---------- */
 html.still *,html.still *::before,html.still *::after{animation:none !important}
-html.still .intro,html.nointro .intro{display:none !important}
+html.still .intro,html.nointro .intro,html.still .pv{display:none !important}
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation:none !important;transition:none !important}
-  .intro,.cur{display:none !important}
+  .intro,.cur,.pv{display:none !important}
+}
+
+/* ---------- mobile menu: links stagger in when the overlay opens ---------- */
+@layer components {
+  .menu .menu-item{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .9s cubic-bezier(.19,1,.22,1)}
+  .menu.is-open .menu-item{opacity:1;transform:none;transition-delay:calc(.12s + var(--i,0) * 60ms)}
 }
