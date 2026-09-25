@@ -244,3 +244,104 @@ html.vt-lang::view-transition-new(root){animation:vtIn .8s cubic-bezier(.19,1,.2
   .galStick{overflow-x:auto}
   .galTrack{display:flex;gap:44px;width:max-content;align-items:flex-end}
 }
+
+/* ---------- intro (plays once per session; hidden via html.nointro, ?still or reduced motion) ---------- */
+.intro{animation:lift 1.1s cubic-bezier(.77,0,.18,1) 1.15s both}
+.intro .im{animation:mono 1.4s ease both}
+.intro .ih{transform-origin:center;animation:hair 1s cubic-bezier(.77,0,.18,1) .2s both}
+
+/* ---------- load choreography (offsets from --t0) ---------- */
+.in{animation:fadeUp 1.4s cubic-bezier(.19,1,.22,1) both;animation-delay:calc(var(--t0) + var(--d,0s))}
+.down{animation:fadeDown 1.2s cubic-bezier(.19,1,.22,1) both;animation-delay:calc(var(--t0) + var(--d,0s))}
+.ch{animation:rise 1.3s cubic-bezier(.19,1,.22,1) both;animation-delay:calc(var(--t0) + var(--d,0s))}
+.arch{animation:archIn 1.8s cubic-bezier(.77,0,.18,1) both;animation-delay:calc(var(--t0) + .2s)}
+.kb{animation:kenburns 3s cubic-bezier(.19,1,.22,1) both;animation-delay:calc(var(--t0) + .2s)}
+.sweep{animation:sweep 7s cubic-bezier(.65,0,.35,1) infinite;animation-delay:calc(var(--t0) + 1.8s)}
+.tick{animation:ticker 11s cubic-bezier(.77,0,.18,1) infinite;animation-delay:calc(var(--t0) + 1.6s)}
+.spin{animation:spin 26s linear infinite}
+.scrollLine{animation:slideLine 2.4s cubic-bezier(.65,0,.35,1) infinite}
+.dot{animation:glow 2.2s ease-in-out infinite}
+
+/* ---------- custom cursor (mounted only for fine pointers with motion allowed) ---------- */
+.cur{position:fixed;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;border:1px solid #fff;border-radius:50%;mix-blend-mode:difference;pointer-events:none;z-index:300;opacity:0;transition:width .45s cubic-bezier(.19,1,.22,1),height .45s cubic-bezier(.19,1,.22,1),margin .45s cubic-bezier(.19,1,.22,1),background-color .3s,opacity .3s}
+.cur.on{opacity:1}
+.cur.big{width:84px;height:84px;margin:-42px 0 0 -42px;background:#fff}
+
+/* portfolio progress bar only makes sense while the gallery is pinned */
+.galBar{display:none}
+
+/* ---------- scroll-driven (Chrome/Edge today; everything stays visible elsewhere) ---------- */
+@supports (animation-timeline: view()){
+  @keyframes ink{from{opacity:.14}}
+  @keyframes drawW{from{width:0%}}
+  @keyframes para{from{transform:translateY(90px)}to{transform:translateY(-90px)}}
+  @keyframes drift{from{transform:translateX(5%)}to{transform:translateX(-10%)}}
+  @keyframes clipUp{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+  @keyframes signIn{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+  @keyframes galX{to{transform:translateX(calc(-100% + 100vw - 112px))}}
+  /* explicit end state: the source's `grow` animated scaleX(0) → scaleX(0) */
+  @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .rv{animation:fadeUp linear both;animation-timeline:view();animation-range:entry 0% cover 28%}
+  .word{animation:ink linear both;animation-timeline:view();animation-range:cover 12% cover 42%}
+  .drawline{animation:drawW linear both;animation-timeline:view();animation-range:cover 15% cover 50%}
+  .para{animation:para linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+  .drift{animation:drift linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+  .clipUp{animation:clipUp linear both;animation-timeline:view();animation-range:entry 10% cover 40%}
+  .sign{animation:signIn linear both;animation-timeline:view();animation-range:entry 60% cover 45%}
+
+  /* pinned horizontal gallery: only on wide screens with motion allowed, so the
+     cards stay reachable (as a swipe row) when animations are switched off */
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference){
+    html:not(.still) .gal{height:2600px;view-timeline-name:--gal;view-timeline-axis:block}
+    html:not(.still) .galStick{position:sticky;top:88px;height:820px;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+    html:not(.still) .galTrack{animation:galX linear both;animation-timeline:--gal;animation-range:contain 0% contain 100%}
+    html:not(.still) .galBar{display:block}
+    html:not(.still) .galProg{animation:grow linear both;animation-timeline:--gal;animation-range:contain 0% contain 100%}
+  }
+
+  /* page progress */
+  .pageProg{animation:grow linear both;animation-timeline:scroll()}
+
+  /* section-to-section: cards that round in, then recede */
+  @keyframes secIn{from{border-radius:80px 80px 0 0;transform:scale(.95)}}
+  @keyframes secOut{to{transform:scale(.9);opacity:.15;border-radius:0 0 80px 80px}}
+  .sec{transform-origin:50% 50%;animation:secIn linear both,secOut linear both;animation-timeline:view(),view();animation-range:entry 0% entry 70%,exit 35% exit 100%}
+
+  /* hero leaves in layers (desktop only) */
+  @media (min-width: 1280px){
+    #top{view-timeline-name:--hero}
+    @keyframes heroTxt{to{transform:translateY(-160px);opacity:0;filter:blur(6px)}}
+    @keyframes heroArch{to{transform:translateY(200px) scale(1.07)}}
+    .heroTxt{animation:heroTxt linear both;animation-timeline:--hero;animation-range:exit 0% exit 90%}
+    .heroArch{animation:heroArch linear both;animation-timeline:--hero;animation-range:exit 0% exit 100%}
+  }
+
+  /* headings rise line by line out of a mask */
+  @keyframes luIn{from{transform:translateY(110%) rotate(2.5deg)}}
+  .mask{view-timeline-name:--m}
+  .lu{transform-origin:0 100%;animation:luIn linear both;animation-timeline:--m;animation-range:entry 30% cover 42%}
+
+  /* giant drifting section numerals */
+  @keyframes numX{from{transform:translateX(160px)}to{transform:translateX(-160px)}}
+  .bignum{animation:numX linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+
+  /* image and tile reveals */
+  @keyframes imgIn{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+  .imgIn{animation:imgIn linear both;animation-timeline:view();animation-range:entry 10% cover 40%}
+  @keyframes tileIn{from{clip-path:inset(100% 0 0 0);transform:translateY(60px)}to{clip-path:inset(0 0 0 0);transform:none}}
+  .tileIn{animation:tileIn linear both;animation-timeline:view()}
+
+  /* quote mark swings in, footer name opens up */
+  @keyframes qm{from{transform:translateY(80px) rotate(-18deg);opacity:0}}
+  .qm{transform-origin:50% 80%;animation:qm linear both;animation-timeline:view();animation-range:entry 20% cover 40%}
+  @keyframes spread{from{letter-spacing:-.07em;opacity:.15}}
+  .spread{animation:spread linear both;animation-timeline:view();animation-range:entry 0% cover 55%}
+}
+
+/* ---------- motion switches ---------- */
+html.still *,html.still *::before,html.still *::after{animation:none !important}
+html.still .intro,html.nointro .intro{display:none !important}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+  .intro,.cur{display:none !important}
+}

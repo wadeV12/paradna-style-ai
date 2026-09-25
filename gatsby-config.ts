@@ -7,6 +7,7 @@ const config: GatsbyConfig = {
     siteUrl: site.url,
   },
   graphqlTypegen: false,
+  jsxRuntime: "automatic",
   trailingSlash: "always",
   plugins: [
     "gatsby-plugin-image",

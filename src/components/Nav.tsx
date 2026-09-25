@@ -2,21 +2,24 @@ import * as React from "react"
 import { useI18n } from "../content/i18n"
 import LangSwitch from "./LangSwitch"
 import ThemeToggle from "./ThemeToggle"
+import { pathFor } from "../config/site"
 
 const Nav = () => {
-  const { t } = useI18n()
+  const { lang, t } = useI18n()
+  // Path-qualified so the links also work from the 404 page.
+  const home = pathFor(lang)
   const links = [
-    ["#approach", t.nApproach],
-    ["#services", t.nServices],
-    ["#journey", t.nJourney],
-    ["#portfolio", t.nPortfolio],
-    ["#journal", t.nJournal],
+    [`${home}#approach`, t.nApproach],
+    [`${home}#services`, t.nServices],
+    [`${home}#journey`, t.nJourney],
+    [`${home}#portfolio`, t.nPortfolio],
+    [`${home}#journal`, t.nJournal],
   ] as const
 
   return (
     <header className="down sticky top-0 z-50 border-b border-ink/10 bg-bg/74 backdrop-blur-[16px]" style={{ "--d": ".55s" } as React.CSSProperties}>
       <nav className="mx-auto flex h-[88px] w-full max-w-[1440px] items-center justify-between px-[72px]">
-        <a href="#top" aria-label={t.homeAria} className="flex items-center gap-4">
+        <a href={`${home}#top`} aria-label={t.homeAria} className="flex items-center gap-4">
           <span className="flex size-[50px] items-center justify-center rounded-full border border-a font-serif text-[19px] text-a italic" aria-hidden="true">
             TP
           </span>
@@ -34,7 +37,7 @@ const Nav = () => {
           <ThemeToggle />
           <a
             className="btn ghost flex h-[46px] items-center rounded-full border border-ink/40 px-[26px] text-[11px] font-medium tracking-[0.22em] whitespace-nowrap uppercase"
-            href="#contact"
+            href={`${home}#contact`}
           >
             {t.navBook}
           </a>

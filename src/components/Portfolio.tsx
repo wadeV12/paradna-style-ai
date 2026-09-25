@@ -39,7 +39,7 @@ const Portfolio = () => {
             </a>
           ))}
         </div>
-        <div aria-hidden="true" className="mx-auto mt-14 h-px w-[calc(100%-224px)] max-w-[1216px] bg-ink/12">
+        <div aria-hidden="true" className="galBar mx-auto mt-14 h-px w-[calc(100%-224px)] max-w-[1216px] bg-ink/12">
           <div className="galProg h-px origin-left bg-a" />
         </div>
       </div>
