@@ -155,10 +155,16 @@ html.nointro {
 @keyframes vtOut{to{opacity:0;filter:blur(10px);transform:translateY(-10px)}}
 @keyframes vtIn{from{opacity:0;filter:blur(10px);transform:translateY(12px)}}
 
-/* ---------- view transitions (theme: circle reveal driven from JS; language: blur/fade) ---------- */
+/* ---------- view transitions ---------- */
+/* language: EN ⇄ UA are full page loads, soft blur/fade across documents (Chrome/Edge; instant elsewhere) */
+@media (prefers-reduced-motion: no-preference){
+  @view-transition{navigation:auto}
+}
+::view-transition-old(root){animation:vtOut .45s cubic-bezier(.65,0,.35,1) both}
+::view-transition-new(root){animation:vtIn .8s cubic-bezier(.19,1,.22,1) .2s both}
+html.still::view-transition-old(root),html.still::view-transition-new(root){animation:none}
+/* theme: circle reveal driven from JS (ThemeToggle) */
 html.vt-theme::view-transition-old(root),html.vt-theme::view-transition-new(root){animation:none;mix-blend-mode:normal}
-html.vt-lang::view-transition-old(root){animation:vtOut .45s cubic-bezier(.65,0,.35,1) both}
-html.vt-lang::view-transition-new(root){animation:vtIn .8s cubic-bezier(.19,1,.22,1) .2s both}
 
 /* ---------- interactions (verbatim from the design source) ---------- */
 @layer components {

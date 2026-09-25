@@ -7,10 +7,6 @@ import Cursor from "./Cursor"
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const { lang, t } = useI18n()
-  // Keeps <html lang> right after client-side EN ⇄ UA navigation (SSR sets it per page).
-  React.useEffect(() => {
-    document.documentElement.lang = lang
-  }, [lang])
   return (
     <div className="relative w-full overflow-x-clip bg-page text-ink">
       <Cursor />

@@ -1,0 +1,63 @@
+# Netlify: static Gatsby build. Connect the GitHub repo and Netlify picks this up.
+# Netlify adds Gatsby's adapter automatically (build cache between deploys).
+
+[build]
+  command = "npm run build"
+  publish = "public"
+
+[build.environment]
+  NODE_VERSION = "24"
+  # sharp/libvips for gatsby-plugin-sharp can be memory-hungry on large images
+  NODE_OPTIONS = "--max-old-space-size=4096"
+
+# ---------- security headers (all routes) ----------
+# CSP needs 'unsafe-inline' for scripts/styles: Gatsby inlines its CSS and a few
+# boot scripts, and the pre-paint theme script is inline. Everything else is
+# self-hosted (fonts, images); Instagram/YouTube are plain outbound links.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+
+# ---------- caching (per Gatsby's recommendations) ----------
+# HTML and page data change on every deploy: always revalidate.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/page-data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Content-hashed assets never change: cache for a year.
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Unhashed files at the root: short cache.
+[[headers]]
+  for = "/favicon.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/apple-touch-icon.png"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

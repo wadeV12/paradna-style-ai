@@ -1,33 +1,16 @@
 import * as React from "react"
-import { navigate } from "gatsby"
 import { useI18n } from "../content/i18n"
-import { languages, type Lang } from "../config/site"
-import { viewTransition } from "../lib/motion"
+import { languages } from "../config/site"
 
-// Resolves once the page for `lang` has rendered (the template marks <main data-lang>).
-const rendered = (lang: Lang) =>
-  new Promise<void>((resolve) => {
-    const start = performance.now()
-    const check = () => {
-      if (document.querySelector(`[data-lang="${lang}"]`) || performance.now() - start > 3000) resolve()
-      else requestAnimationFrame(check)
-    }
-    check()
-  })
-
+// Plain links between / and /ua/: a full page load, animated by a cross-document
+// view transition (see `@view-transition` in global.css). Gatsby's client-side
+// navigation stalls inside startViewTransition, so it isn't used here.
 const LangSwitch = () => {
   const { lang, t } = useI18n()
 
-  const go = (e: React.MouseEvent<HTMLAnchorElement>, to: Lang, path: string) => {
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
-    e.preventDefault()
-    if (to === lang) return
-    // Keep the section the reader is on.
-    const target = path + window.location.hash
-    viewTransition("lang", async () => {
-      await navigate(target)
-      await rendered(to)
-    })
+  // Keep the section the reader is on.
+  const keepHash = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    e.currentTarget.href = path + window.location.hash
   }
 
   return (
@@ -42,7 +25,7 @@ const LangSwitch = () => {
               hrefLang={l.code}
               lang={l.code}
               aria-current={active ? "page" : undefined}
-              onClick={(e) => go(e, l.code, l.path)}
+              onClick={(e) => (active ? e.preventDefault() : keepHash(e, l.path))}
               className={`langBtn flex h-[46px] w-[44px] items-center justify-center hover:text-ink ${active ? "text-a-sm" : "text-muted"}`}
               style={{ "--on": active ? 1 : 0 } as React.CSSProperties}
             >
