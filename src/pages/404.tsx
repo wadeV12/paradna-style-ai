@@ -33,5 +33,6 @@ export const Head: HeadFC = () => (
   <>
     <title>404 — Tetyana Paradna</title>
     <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </>
 )

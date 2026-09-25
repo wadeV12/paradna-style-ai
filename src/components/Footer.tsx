@@ -21,7 +21,8 @@ const Footer = () => {
             <Label className="mb-[34px]">{t.l6}</Label>
             <MaskHeading a={t.h6a} b={t.h6b} indent="1.207em" className="text-[clamp(48px,6.8vw+19px,116px)] leading-[0.98]" />
           </div>
-          <a className="orb rv relative block size-[170px] shrink-0 self-end rounded-full bg-a md:size-[200px] md:self-auto xl:size-[220px]" href={mailto} aria-label={t.book}>
+          <a className="orb rv relative block size-[170px] shrink-0 self-end rounded-full bg-a md:size-[200px] md:self-auto xl:size-[220px]" href={mailto}>
+            <span className="sr-only">{t.book}</span>
             <RingText id="orbRing" size={220} r={84} text={t.orbRing} textLength={524} fontSize={11} textClassName="fill-on-a" />
             <svg className="absolute inset-0 size-full" width="220" height="220" viewBox="0 0 220 220" aria-hidden="true">
               <path d="M92 128 L128 92 M100 92 H128 V120" fill="none" strokeWidth="1.6" className="stroke-on-a" />

@@ -60,7 +60,7 @@ const Hero = ({ image }: { image?: IGatsbyImageData }) => {
           </p>
 
           <div className="in pointer-events-auto mt-9 flex flex-wrap items-center gap-x-[38px] gap-y-5 xl:absolute xl:top-[730px] xl:left-[112px] xl:m-0" style={vars({ "--d": "1.1s" })}>
-            <a className="btn flex h-[58px] items-center gap-[14px] rounded-full bg-a px-[30px] text-[11px] font-medium tracking-[0.24em] uppercase md:px-[34px]" href="#contact">
+            <a className="btn flex h-[58px] items-center gap-[14px] rounded-full bg-a px-[26px] text-[11px] font-medium tracking-[0.16em] whitespace-nowrap uppercase sm:px-[30px] sm:tracking-[0.24em] md:px-[34px]" href="#contact">
               {t.book}{" "}
               <span className="ar" aria-hidden="true">
                 →
@@ -90,6 +90,7 @@ const Hero = ({ image }: { image?: IGatsbyImageData }) => {
                     image={image}
                     alt={t.portrait}
                     loading="eager"
+                    fetchPriority="high"
                     className="!absolute inset-0 size-full"
                     objectFit="cover"
                     objectPosition="54% 0%"

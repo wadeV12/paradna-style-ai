@@ -14,6 +14,7 @@ html.dark {
   --accent: #c9ab72;
   --t0: 1.35s;
   --a: var(--accent);
+  --a-sm: var(--a);
   --on-a: #0e0c0a;
   --ink: #efe8dc;
   --ink-rgb: 239, 232, 220;
@@ -40,6 +41,8 @@ html.dark {
 
 html.light {
   --a: color-mix(in oklab, var(--accent) 58%, #1a1208);
+  /* accessibility addition: small accent text needs 4.5:1 on bg2/bg3 too (58% gives 4.47 / 4.08) */
+  --a-sm: color-mix(in oklab, var(--accent) 52%, #1a1208);
   --on-a: #f7f2ea;
   --ink: #1a1510;
   --ink-rgb: 26, 21, 16;
@@ -73,6 +76,7 @@ html.nointro {
 @theme inline {
   --color-accent: var(--accent);
   --color-a: var(--a);
+  --color-a-sm: var(--a-sm);
   --color-on-a: var(--on-a);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
@@ -197,6 +201,9 @@ html.vt-lang::view-transition-new(root){animation:vtIn .8s cubic-bezier(.19,1,.2
   .mask{display:block;overflow:hidden;padding-bottom:.14em;margin-bottom:-.14em}
   .lu{display:block}
   .ch{display:inline-block}
+  /* hero portrait: show as soon as it decodes (no placeholder to fade from),
+     instead of waiting for gatsby-plugin-image's script to lift opacity:0 */
+  .arch [data-main-image]{opacity:1 !important}
   /* hero mirror light: parked off-canvas until its loop runs */
   .sweep{transform:translateX(-120%)}
 

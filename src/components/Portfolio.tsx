@@ -38,7 +38,7 @@ const Portfolio = () => {
                 <PhCaption className="text-soft">{t.clientPhoto}</PhCaption>
               </div>
               <div className="mt-[22px] flex items-baseline gap-4">
-                <span className="font-serif text-[15px] text-a italic">{k.n}</span>
+                <span className="font-serif text-[15px] text-a-sm italic">{k.n}</span>
                 <h3 className="m-0 font-serif text-[clamp(22px,0.6vw+18px,26px)] font-normal">{k.name}</h3>
               </div>
               <div className="cl mt-[14px] h-px bg-a" />

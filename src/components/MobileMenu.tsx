@@ -48,7 +48,7 @@ const MobileMenu = ({ open, onClose, links }: { open: boolean; onClose: () => vo
             className="menu-item flex items-baseline gap-5 py-2 font-serif text-[clamp(38px,9vw,64px)] leading-[1.1]"
             style={vars({ "--i": i })}
           >
-            <span className="font-serif text-[14px] text-a italic">{String(i + 1).padStart(2, "0")}</span>
+            <span className="font-serif text-[14px] text-a-sm italic">{String(i + 1).padStart(2, "0")}</span>
             {label}
           </a>
         ))}

@@ -33,7 +33,7 @@ const Journal = () => {
               href={site.instagram.url}
               target="_blank"
               rel="noopener"
-              aria-label={`${t.igAria} ${p.n}`}
+              aria-label={`${t.igAria} — ${t.post} ${p.n}`}
               style={{ animationRange: p.range }}
             >
               <div className="igimg absolute inset-0" style={{ background: p.bg }} />

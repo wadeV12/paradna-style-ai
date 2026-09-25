@@ -43,7 +43,7 @@ const LangSwitch = () => {
               lang={l.code}
               aria-current={active ? "page" : undefined}
               onClick={(e) => go(e, l.code, l.path)}
-              className={`langBtn flex h-[46px] w-[44px] items-center justify-center hover:text-ink ${active ? "text-a" : "text-muted"}`}
+              className={`langBtn flex h-[46px] w-[44px] items-center justify-center hover:text-ink ${active ? "text-a-sm" : "text-muted"}`}
               style={{ "--on": active ? 1 : 0 } as React.CSSProperties}
             >
               {l.label}

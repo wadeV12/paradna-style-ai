@@ -28,7 +28,7 @@ const Services = () => {
           <div className="rows border-b border-ink/14">
             {items.map((s) => (
               <a key={s.n} className="svc rv grid grid-cols-[36px_minmax(0,1fr)_34px] items-center gap-x-4 gap-y-3 border-t border-ink/14 py-8 md:grid-cols-[64px_minmax(0,1fr)_34px] md:px-2 xl:grid-cols-[90px_minmax(0,1fr)_400px_120px_40px] xl:gap-8 xl:py-10" href="#contact">
-                <span className="svn font-serif text-[18px] text-a italic">{s.n}</span>
+                <span className="svn font-serif text-[18px] text-a-sm italic">{s.n}</span>
                 <h3 className="svt m-0 font-serif text-[clamp(26px,1.4vw+22px,42px)] leading-tight font-normal">{s.title}</h3>
                 <span className="col-start-2 col-end-4 text-[15px] leading-[1.75] font-light text-soft xl:col-auto">{s.desc}</span>
                 <span className="col-start-2 text-[11px] tracking-[0.22em] text-muted uppercase xl:col-auto">{t.price}</span>

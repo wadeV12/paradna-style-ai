@@ -24,11 +24,11 @@ const Nav = () => {
     <>
       <header className="down sticky top-0 z-50 border-b border-ink/10 bg-bg/74 backdrop-blur-[16px]" style={{ "--d": ".55s" } as React.CSSProperties}>
         <nav className="mx-auto flex h-[72px] w-full max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-6 md:h-[88px] md:px-10 design:px-[72px]">
-          <a href={`${home}#top`} aria-label={t.homeAria} className="flex shrink-0 items-center gap-4">
-            <span className="flex size-[44px] items-center justify-center rounded-full border border-a font-serif text-[17px] text-a italic md:size-[50px] md:text-[19px]" aria-hidden="true">
+          <a href={`${home}#top`} className="flex shrink-0 items-center gap-4">
+            <span className="flex size-[44px] items-center justify-center rounded-full border border-a font-serif text-[17px] text-a-sm italic md:size-[50px] md:text-[19px]" aria-hidden="true">
               TP
             </span>
-            <span className="hidden text-[12px] font-medium tracking-[0.32em] whitespace-nowrap uppercase sm:inline nav:hidden design:inline">{t.name}</span>
+            <span className="sr-only text-[12px] font-medium tracking-[0.32em] whitespace-nowrap uppercase sm:not-sr-only nav:sr-only design:not-sr-only">{t.name}</span>
           </a>
           <div className="hidden gap-6 text-[12px] tracking-[0.22em] uppercase nav:flex design:gap-[38px]">
             {links.map(([href, label]) => (
