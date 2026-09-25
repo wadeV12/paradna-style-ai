@@ -6,7 +6,7 @@ import { languages, site } from "./src/config/site"
 // Tailwind v4 runs as a webpack loader appended to Gatsby's plain `.css` rule
 // (after postcss-loader in the array, so it runs first). The HTML stages use a
 // null loader for CSS, so only `develop` and `build-javascript` are touched.
-export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({ stage, getConfig, actions }) => {
+export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({ stage, getConfig, actions, plugins }) => {
   if (stage !== "develop" && stage !== "build-javascript") return
   const config = getConfig()
   const tailwind = { loader: "@tailwindcss/webpack", options: { base: __dirname } }
@@ -14,6 +14,17 @@ export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({ sta
     for (const branch of rule.oneOf ?? []) {
       if (String(branch.test) === String(/\.css$/) && Array.isArray(branch.use)) branch.use.push(tailwind)
     }
+  }
+  // Production CSS minifier: cssnano's declaration sorter moves the `animation`
+  // shorthand after `animation-timeline`/`animation-range`, which resets them,
+  // so every scroll-driven animation jumps to its end frame (hero text at
+  // opacity 0, sections stuck at secOut's .15). Keep declarations in source order.
+  if (stage === "build-javascript" && config.optimization?.minimizer) {
+    config.optimization.minimizer = config.optimization.minimizer.map((m: object) =>
+      m?.constructor?.name === "CssMinimizerPlugin"
+        ? plugins.minifyCss({ minimizerOptions: { preset: ["default", { cssDeclarationSorter: false }] } })
+        : m,
+    )
   }
   actions.replaceWebpackConfig(config)
 }
