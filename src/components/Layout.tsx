@@ -1,6 +1,7 @@
 import * as React from "react"
 import { useI18n } from "../content/i18n"
 import Nav from "./Nav"
+import Footer from "./Footer"
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const { lang, t } = useI18n()
@@ -13,6 +14,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <main id="main" data-lang={lang} tabIndex={-1}>
         {children}
       </main>
+      <Footer />
     </div>
   )
 }

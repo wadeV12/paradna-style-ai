@@ -111,6 +111,8 @@ html.nointro {
 @layer base {
   html {
     background: var(--page);
+    /* the design was built on the browser default, not Tailwind's 1.5 */
+    line-height: normal;
   }
   body {
     margin: 0;
@@ -186,4 +188,59 @@ html.vt-lang::view-transition-new(root){animation:vtIn .8s cubic-bezier(.19,1,.2
 @layer components {
   .skip{position:fixed;left:16px;top:16px;z-index:400;padding:12px 20px;border-radius:999px;background:var(--a);color:var(--on-a);font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;transform:translateY(-200%);transition:transform .3s ease}
   .skip:focus-visible{transform:none;color:var(--on-a)}
+}
+
+/* ---------- section styles + hover interactions (verbatim from the design source) ---------- */
+@layer components {
+  .mask{display:block;overflow:hidden;padding-bottom:.14em;margin-bottom:-.14em}
+  .lu{display:block}
+  .ch{display:inline-block}
+  /* hero mirror light: parked off-canvas until its loop runs */
+  .sweep{transform:translateX(-120%)}
+
+  .bignum{-webkit-text-stroke:1px color-mix(in srgb, var(--a) 28%, transparent);color:transparent}
+  .outline-a{-webkit-text-stroke:1px var(--a);color:transparent}
+
+  .rows .svc{transition:opacity .6s ease}
+  .rows:hover .svc{opacity:.35}
+  .rows .svc:hover{opacity:1}
+  .svc{position:relative}
+  .svc::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--a);transform:scaleX(0);transform-origin:left;transition:transform 1s cubic-bezier(.77,0,.18,1)}
+  .svc:hover::after{transform:scaleX(1)}
+  .svc .svt,.svc .arr,.svc .svn{transition:transform .9s cubic-bezier(.19,1,.22,1),color .5s ease}
+  .svc:hover .svt{transform:translateX(20px);font-style:italic;color:var(--a)}
+  .svc:hover .arr{transform:rotate(-45deg);color:var(--a)}
+  .svc:hover .svn{color:var(--ink)}
+  .svc,.svc:hover{color:var(--ink)}
+  .pv{opacity:0;transition:opacity .45s ease}
+  .pv .pi{opacity:0;transform:scale(1.12) rotate(-3deg);transition:opacity .5s ease,transform .9s cubic-bezier(.19,1,.22,1)}
+  .svlist:has(.rows > a:hover) .pv{opacity:1}
+  .svlist:has(.rows > a:nth-child(1):hover) .pv > .pi:nth-child(1),
+  .svlist:has(.rows > a:nth-child(2):hover) .pv > .pi:nth-child(2),
+  .svlist:has(.rows > a:nth-child(3):hover) .pv > .pi:nth-child(3),
+  .svlist:has(.rows > a:nth-child(4):hover) .pv > .pi:nth-child(4),
+  .svlist:has(.rows > a:nth-child(5):hover) .pv > .pi:nth-child(5){opacity:1;transform:rotate(-3deg)}
+
+  .step .num{transition:color .7s ease}
+  .step:hover .num{color:var(--a)}
+
+  .card,.card:hover{color:var(--ink)}
+  .card .cimg{transition:transform 1.4s cubic-bezier(.19,1,.22,1)}
+  .card:hover .cimg{transform:scale(1.07)}
+  .card .cl{transform:scaleX(.18);transform-origin:left;transition:transform .9s cubic-bezier(.77,0,.18,1)}
+  .card:hover .cl{transform:scaleX(1)}
+
+  .ig .igimg{transition:transform 1.2s cubic-bezier(.19,1,.22,1)}
+  .ig:hover .igimg{transform:scale(1.08)}
+  .ig .igov{opacity:0;transition:opacity .5s ease}
+  .ig:hover .igov,.ig:focus-visible .igov{opacity:1}
+
+  .orb{transition:transform .9s cubic-bezier(.19,1,.22,1)}
+  .orb:hover{transform:scale(1.07) rotate(-4deg)}
+  .orb,.orb:hover{color:var(--on-a)}
+
+  /* portfolio gallery: base is a horizontal swipe row (scroll-driven pinning is added on top) */
+  .gal{position:relative}
+  .galStick{overflow-x:auto}
+  .galTrack{display:flex;gap:44px;width:max-content;align-items:flex-end}
 }

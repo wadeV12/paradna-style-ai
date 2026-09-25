@@ -1,54 +1,47 @@
 import * as React from "react"
-import type { HeadFC, PageProps } from "gatsby"
+import { graphql, type HeadFC, type PageProps } from "gatsby"
+import type { IGatsbyImageData } from "gatsby-plugin-image"
 import type { Lang } from "../config/site"
-import { I18nProvider, dicts, useI18n } from "../content/i18n"
+import { I18nProvider, dicts } from "../content/i18n"
 import Layout from "../components/Layout"
+import Hero from "../components/Hero"
+import Approach from "../components/Approach"
+import Services from "../components/Services"
+import Journey from "../components/Journey"
+import Portfolio from "../components/Portfolio"
+import Testimonial from "../components/Testimonial"
+import Journal from "../components/Journal"
 
 type Ctx = { lang: Lang }
+type Data = { hero: { childImageSharp: { gatsbyImageData: IGatsbyImageData } } | null }
 
-// Milestone 2: section stubs so the nav anchors and the EN|UA hash hand-off can
-// be tested. Replaced by the real sections in milestone 3.
-const Stubs = () => {
-  const { t } = useI18n()
-  const stubs = [
-    ["top", t.name, "bg-bg"],
-    ["approach", t.l1, "bg-bg"],
-    ["services", t.l2, "bg-bg2"],
-    ["journey", t.l3, "bg-bg"],
-    ["portfolio", t.l4, "bg-bg2"],
-    ["journal", t.l5, "bg-bg"],
-    ["contact", t.l6, "bg-bg2"],
-  ] as const
-  return (
-    <>
-      {stubs.map(([id, label, bg], i) => (
-        <section key={id} id={id} className={`${bg} border-t border-ink/10`}>
-          <div className="mx-auto flex min-h-[80vh] max-w-[1440px] items-center px-[112px]">
-            {i === 0 ? (
-              <h1 className="font-serif text-[148px] leading-[0.98] font-normal">
-                {t.first} <span className="text-a italic">{t.last}</span>
-              </h1>
-            ) : (
-              <h2 className="font-serif text-[90px] leading-none font-normal">{label}</h2>
-            )}
-          </div>
-        </section>
-      ))}
-    </>
-  )
-}
-
-const Home = ({ pageContext }: PageProps<object, Ctx>) => (
+const Home = ({ data, pageContext }: PageProps<Data, Ctx>) => (
   <I18nProvider lang={pageContext.lang}>
     <Layout>
-      <Stubs />
+      <Hero image={data.hero?.childImageSharp.gatsbyImageData} />
+      <Approach />
+      <Services />
+      <Journey />
+      <Portfolio />
+      <Testimonial />
+      <Journal />
     </Layout>
   </I18nProvider>
 )
 
 export default Home
 
-export const Head: HeadFC<object, Ctx> = ({ pageContext }) => {
+export const query = graphql`
+  query HomePage {
+    hero: file(relativePath: { eq: "hero-portrait.jpg" }) {
+      childImageSharp {
+        gatsbyImageData(width: 460, placeholder: NONE, formats: [AUTO, WEBP, AVIF], quality: 80, outputPixelDensities: [1, 1.5, 2, 3])
+      }
+    }
+  }
+`
+
+export const Head: HeadFC<Data, Ctx> = ({ pageContext }) => {
   const t = dicts[pageContext.lang]
   return (
     <>
