@@ -146,3 +146,44 @@ html.nointro {
 @keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(201,171,114,.55)}50%{box-shadow:0 0 0 10px rgba(201,171,114,0)}}
 @keyframes vtOut{to{opacity:0;filter:blur(10px);transform:translateY(-10px)}}
 @keyframes vtIn{from{opacity:0;filter:blur(10px);transform:translateY(12px)}}
+
+/* ---------- view transitions (theme: circle reveal driven from JS; language: blur/fade) ---------- */
+html.vt-theme::view-transition-old(root),html.vt-theme::view-transition-new(root){animation:none;mix-blend-mode:normal}
+html.vt-lang::view-transition-old(root){animation:vtOut .45s cubic-bezier(.65,0,.35,1) both}
+html.vt-lang::view-transition-new(root){animation:vtIn .8s cubic-bezier(.19,1,.22,1) .2s both}
+
+/* ---------- interactions (verbatim from the design source) ---------- */
+@layer components {
+  .langBtn{cursor:pointer;background:transparent;border:0;padding:0;font:inherit;letter-spacing:inherit;position:relative;transition:color .4s ease}
+  .langBtn::after{content:"";position:absolute;left:12px;right:12px;bottom:10px;height:1px;background:currentColor;transform:scaleX(var(--on,0));transition:transform .6s cubic-bezier(.19,1,.22,1)}
+  .langBtn:hover{color:var(--ink)}
+  .themeBtn{cursor:pointer;transition:border-color .5s ease,background-color .5s ease}
+  .themeBtn:hover{border-color:var(--a)}
+  .themeBtn svg{transition:transform 1s cubic-bezier(.19,1,.22,1)}
+  .themeBtn:hover svg{transform:rotate(90deg)}
+
+  .ul{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .6s cubic-bezier(.19,1,.22,1);padding-bottom:4px}
+  .ul:hover{background-size:100% 1px}
+  .btn{position:relative;overflow:hidden;isolation:isolate}
+  .btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--ink);transform:translateY(101%);border-radius:inherit;transition:transform .7s cubic-bezier(.19,1,.22,1)}
+  .btn:hover::before{transform:none}
+  .btn,.btn:hover{color:var(--on-a)}
+  .btn .ar{display:inline-block;transition:transform .6s cubic-bezier(.19,1,.22,1)}
+  .btn:hover .ar{transform:translateX(6px)}
+  .ghost,.ghost:hover{color:var(--ink)}
+  .ghost::before{background:var(--a)}
+  .ghost:hover{color:var(--on-a)}
+
+  /* page scroll progress under the nav; stays hidden without scroll-driven animations */
+  .pageProg{transform-origin:left;transform:scaleX(0)}
+}
+
+/* ---------- accessibility additions (not in the design) ---------- */
+@layer base {
+  :focus-visible{outline:2px solid var(--a);outline-offset:3px}
+  main:focus{outline:none}
+}
+@layer components {
+  .skip{position:fixed;left:16px;top:16px;z-index:400;padding:12px 20px;border-radius:999px;background:var(--a);color:var(--on-a);font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;transform:translateY(-200%);transition:transform .3s ease}
+  .skip:focus-visible{transform:none;color:var(--on-a)}
+}
